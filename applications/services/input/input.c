@@ -44,10 +44,10 @@ typedef struct {
 
 static InputKey decode_key_from_byte(uint8_t byte) {
     switch(byte) {
-    case 0b00010011: return InputKeyRight;  
-    case 0b00100011: return InputKeyOk;        
-    case 0b10000011: return InputKeyLeft;         
-    case 0b01000011: return InputKeyUp;       
+    case 0b00010011: return InputKeyUp;  
+    case 0b00100011: return InputKeyLeft;        
+    case 0b10000011: return InputKeyRight;         
+    case 0b01000011: return InputKeyOk;       
     case 0b00001011: return InputKeyDown;     
     case 0b00000111: return InputKeyBack;    
     
@@ -158,8 +158,12 @@ int32_t input_srv(void* p) {
         "Initial button state (released): " BYTE_TO_BIN_PATTERN,
         BYTE_TO_BIN(buttons_released_state));
 
+    //FURI_LOG_I(TAG, "Input Service Starting in Interrupt Mode");
+    //furi_hal_gpio_init(&gpio_button_IRQ, GpioModeInterruptRiseFall, GpioPullDown, GpioSpeedLow);
+    //furi_hal_gpio_add_int_callback(&gpio_button_IRQ, input_isr, (void*)thread_id);
+
     FURI_LOG_I(TAG, "Input Service Starting in Interrupt Mode");
-    furi_hal_gpio_init(&gpio_button_IRQ, GpioModeInterruptRiseFall, GpioPullDown, GpioSpeedLow);
+    furi_hal_gpio_init(&gpio_button_IRQ, GpioModeInterruptRiseFall, GpioPullUp, GpioSpeedLow);
     furi_hal_gpio_add_int_callback(&gpio_button_IRQ, input_isr, (void*)thread_id);
 
     int counter = 0;
