@@ -128,7 +128,8 @@ static void subghz_scene_add_to_history_callback(
                 idx--;
             }
         }
-        if(subghz_history_add_to_history(history, decoder_base, &preset)) {
+        if(subghz_history_add_to_history(
+               history, decoder_base, &preset, subghz_txrx_get_air_time_ms(subghz->txrx))) {
             furi_string_reset(item_name);
             furi_string_reset(item_time);
 
@@ -215,6 +216,12 @@ void subghz_scene_receiver_on_enter(void* context) {
     }
 
     subghz_txrx_rx_start(subghz->txrx);
+
+    //this scene is re-entered every time a scene on top of it is closed, and RX is
+    //restarted from scratch above - drop whatever the decoders were in the middle of
+    //when RX went down
+    subghz_receiver_reset(subghz_txrx_get_receiver(subghz->txrx));
+
     subghz_view_receiver_set_idx_menu(subghz->subghz_receiver, subghz->idx_menu_chosen);
 
     //to use a universal decoder, we are looking for a link to it
@@ -297,8 +304,14 @@ bool subghz_scene_receiver_on_event(void* context, SceneManagerEvent event) {
             break;
         }
     } else if(event.type == SceneManagerEventTypeTick) {
+        //a module unplugged while this screen is up is noticed here or not at all
+        bool redraw = subghz_txrx_radio_device_poll_active(subghz->txrx);
+
         if(subghz_txrx_hopper_get_state(subghz->txrx) != SubGhzHopperStateOFF) {
             subghz_txrx_hopper_update(subghz->txrx, subghz->last_settings->hopping_threshold);
+            redraw = true;
+        }
+        if(redraw) {
             subghz_scene_receiver_update_statusbar(subghz);
         }
 

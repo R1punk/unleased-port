@@ -85,6 +85,22 @@ typedef enum {
 /** Canvas anonymous structure */
 typedef struct Canvas Canvas;
 
+/** Get canvas buffer.
+ *
+ * @param      canvas  Canvas instance
+ *
+ * @return     pointer to buffer
+ */
+uint8_t* canvas_get_buffer(Canvas* canvas);
+
+/** Get canvas buffer size.
+ *
+ * @param      canvas  Canvas instance
+ *
+ * @return     size of canvas in bytes
+ */
+size_t canvas_get_buffer_size(const Canvas* canvas);
+
 /** Reset canvas drawing tools configuration
  *
  * @param      canvas  Canvas instance
@@ -404,6 +420,21 @@ void canvas_draw_glyph(Canvas* canvas, int32_t x, int32_t y, uint16_t ch);
  * @param      alpha   transparency mode
  */
 void canvas_set_bitmap_mode(Canvas* canvas, bool alpha);
+
+/** Set canvas orientation
+ *
+ * @param      canvas       Canvas instance
+ * @param      orientation  CanvasOrientation
+ */
+void canvas_set_orientation(Canvas* canvas, CanvasOrientation orientation);
+
+/** Get canvas orientation
+ *
+ * @param      canvas  Canvas instance
+ *
+ * @return     CanvasOrientation
+ */
+CanvasOrientation canvas_get_orientation(const Canvas* canvas);
 
 /** Draw rounded-corner frame of width, height at x,y, with round value radius
  *

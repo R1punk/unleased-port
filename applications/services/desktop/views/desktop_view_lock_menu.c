@@ -65,9 +65,9 @@ void desktop_lock_menu_draw_callback(Canvas* canvas, void* model) {
         //if(i == DesktopLockMenuIndexLock) {
         if(i == DesktopLockMenuIndexBt) {
             if(m->bt_mode) {
-                str = "Bluetooth Off";
+                str = "Turn Bluetooth Off";
             } else {
-                str = "Bluetooth On";
+                str = "Turn Bluetooth On";
             }
         } else if(i == DesktopLockMenuIndexStealth) {
             if(m->stealth_mode) {
@@ -158,6 +158,14 @@ bool desktop_lock_menu_input_callback(InputEvent* event, void* context) {
             } else if((dummy_mode == true) && (event->type == InputTypeShort)) {
                 lock_menu->callback(DesktopLockMenuEventDummyModeOff, lock_menu->context);
             }
+        }
+        consumed = true;
+    }
+
+    if((event->key == InputKeyLeft) || (event->key == InputKeyRight)) {
+        // Sideways is the second page of this menu: brightness, volume and vibro.
+        if(event->type == InputTypeShort) {
+            lock_menu->callback(DesktopLockMenuEventOpenQuickSettings, lock_menu->context);
         }
         consumed = true;
     }
