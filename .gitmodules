@@ -17,9 +17,6 @@
 [submodule "lib/microtar"]
 	path = lib/microtar
 	url = https://github.com/amachronic/microtar.git
-[submodule "lib/mbedtls"]
-	path = lib/mbedtls
-	url = https://github.com/Mbed-TLS/mbedtls.git
 [submodule "lib/heatshrink"]
 	path = lib/heatshrink
 	url = https://github.com/flipperdevices/heatshrink.git
@@ -36,3 +33,7 @@
 	path = applications/main/subghz_remote
 	url = https://github.com/DarkFlippers/SubGHz_Remote.git
 	branch = ufw_main_app
+[submodule "lib/mbedtls"]
+	path = lib/mbedtls
+	url = https://github.com/Mbed-TLS/mbedtls.git
+	branch = master
